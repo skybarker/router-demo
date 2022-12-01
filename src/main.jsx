@@ -7,13 +7,19 @@ import {
 import './index.css';
 import Home from "./routes/Home";
 import Error from './routes/Error';
+import Contact from './routes/Contact';
 
 const router = createBrowserRouter([
   {
     path: "/",
     element: <Home />,
     errorElement: <Error />,
+    children: [{
+      path: "/contacts/:id",
+      element: <Contact />,
+    }]
   },
+  
 ]);
 
 ReactDOM.createRoot(document.getElementById('root')).render(
