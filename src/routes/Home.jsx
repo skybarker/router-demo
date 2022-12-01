@@ -1,9 +1,16 @@
 import Search from "../components/Search";
 import Button from "../components/FormButton";
 import Nav from "../components/Nav";
-import { Outlet } from "react-router-dom";
+import { Outlet, Link, useLoaderData } from "react-router-dom";
+import { getContacts } from "../services/api.service";
+
+export async function preload() {
+    const contacts = await getContacts();
+    return { contacts };
+  }
 
 export default function Home() {
+    const {contacts} = useLoaderData();
     return (
       <>
         <div className="flex gap-x-48">
@@ -13,7 +20,30 @@ export default function Home() {
               <Search />
               <Button />
             </div>
-            <Nav />
+            <Nav>
+             {contacts.length ? (
+            <ul>
+              {contacts.map((contact) => (
+                <li key={contact.id}>
+                  <Link to={`contacts/${contact.id}`}>
+                    {contact.first || contact.last ? (
+                      <>
+                        {contact.first} {contact.last}
+                      </>
+                    ) : (
+                      <em>No Name</em>
+                    )}{" "}
+                    {contact.favorite && <span>★</span>}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          ) : (
+            <p>
+              <i>No contacts</i>
+            </p>
+          )}
+          </Nav>
           </div>
           <Outlet />
         </div>

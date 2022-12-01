@@ -5,15 +5,16 @@ import {
   RouterProvider
 } from "react-router-dom";
 import './index.css';
-import Home from "./routes/Home";
-import Error from './routes/Error';
 import Contact from './routes/Contact';
+import Error from './routes/Error';
+import Home, { preload as preloadHome } from "./routes/Home";
 
 const router = createBrowserRouter([
   {
     path: "/",
     element: <Home />,
     errorElement: <Error />,
+    loader: preloadHome,
     children: [{
       path: "/contacts/:id",
       element: <Contact />,
